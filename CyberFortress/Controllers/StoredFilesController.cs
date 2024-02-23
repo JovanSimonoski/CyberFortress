@@ -13,7 +13,7 @@ namespace CyberFortress.Controllers
     public class StoredFilesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private const double maxTotalSize = 150.0;
+        private const double maxTotalSize = 1000.0;
         public ActionResult Index()
         {
             var currentUserId = User.Identity.GetUserId();
@@ -27,26 +27,22 @@ namespace CyberFortress.Controllers
                 ViewBag.TotalFilesSize = 0;
             }
             ViewBag.MaxTotalSize = maxTotalSize;
-            string userId = User.Identity.GetUserId();
-            return View(db.StoredFiles.Where(m => m.UserId.Equals(userId)).ToList());
+            return View(db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).ToList());
         }
 
         public ActionResult Upload()
         {
-            var currentUserId = User.Identity.GetUserId();
-            double totalSizeOfFiles = 0;
-            if (db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Count() > 0)
-            {
-                totalSizeOfFiles = db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Sum(m => m.StoredFileSize);
-            }
-            ViewBag.TotalFilesSize = ((decimal)totalSizeOfFiles) / 1000;
-            ViewBag.MaxTotalSize = maxTotalSize;
             return View();
         }
 
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file)
         {
+            if(file == null)
+            {
+                ViewBag.Message = "Please select a file";
+                return View("Upload");
+            }
             var currentUserId = User.Identity.GetUserId();
             double totalSizeOfFiles = 0;
             if (db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Count() > 0)
@@ -74,10 +70,10 @@ namespace CyberFortress.Controllers
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
                 }
 
-                using (var aesAlg = Aes.Create())
+                using (var aes = Aes.Create())
                 {
-                    encryptionKey = aesAlg.Key;
-                    IV = aesAlg.IV;
+                    encryptionKey = aes.Key;
+                    IV = aes.IV;
                 }
 
                 EncryptAndSaveFile(file.InputStream, path, encryptionKey, IV);
@@ -101,20 +97,18 @@ namespace CyberFortress.Controllers
             {
                 ViewBag.Message = "No file uploaded";
             }
-            ViewBag.TotalFilesSize = totalSizeOfFiles;
-            ViewBag.MaxTotalSize = maxTotalSize;
             return View("Upload");
         }
 
         private void EncryptAndSaveFile(Stream inputStream, string outputPath, byte[] encryptionKey, byte[] IV)
         {
-            using (var aesAlg = Aes.Create())
+            using (var aes = Aes.Create())
             {
-                aesAlg.Key = encryptionKey;
-                aesAlg.IV = IV;
+                aes.Key = encryptionKey;
+                aes.IV = IV;
 
                 using (var outputFile = new FileStream(outputPath, FileMode.Create))
-                using (var cryptoStream = new CryptoStream(outputFile, aesAlg.CreateEncryptor(), CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(outputFile, aes.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     inputStream.CopyTo(cryptoStream);
                 }
@@ -144,15 +138,16 @@ namespace CyberFortress.Controllers
 
             return DecryptAndDownloadFile(filePath, fileName, encryptionKey, IV);
         }
+
         private FileStreamResult DecryptAndDownloadFile(string filePath, string fileName, byte[] encryptionKey, byte[] IV)
         {
-            using (var aesAlg = Aes.Create())
+            using (var aes = Aes.Create())
             {
-                aesAlg.Key = encryptionKey;
-                aesAlg.IV = IV;
+                aes.Key = encryptionKey;
+                aes.IV = IV;
 
                 using (var inputFile = new FileStream(filePath, FileMode.Open))
-                using (var cryptoStream = new CryptoStream(inputFile, aesAlg.CreateDecryptor(), CryptoStreamMode.Read))
+                using (var cryptoStream = new CryptoStream(inputFile, aes.CreateDecryptor(), CryptoStreamMode.Read))
                 {
                     HttpContext.Response.Buffer = false;
                     HttpContext.Response.Clear();

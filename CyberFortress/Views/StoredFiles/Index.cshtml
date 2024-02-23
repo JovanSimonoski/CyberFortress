@@ -5,6 +5,20 @@
 }
 <head>
     <style>
+        #data{
+            width: 50%;
+            float: left;
+        }
+        
+        #upload{
+            width: 48%;
+            float: left;
+        }
+
+        #table-container{
+            clear: both;
+        }
+        
         .circle-graph {
             width: 150px;
             height: 150px;
@@ -12,6 +26,7 @@
             border: 10px solid #7EC8E3;
             position: relative;
         }
+
         .circle-graph::before {
             content: "";
             position: absolute;
@@ -23,11 +38,30 @@
             background: conic-gradient(#0000FF calc(var(--ratio) * 360deg), transparent calc(var(--ratio) * 360deg) 360deg);
             transform: translate(-50%, -50%);
         }
+        .fancy-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+        }
+
+        .fancy-button:hover {
+            background-color: #45a049; /* Darker green */
+            color: white;
+        }
     </style>
 </head>
 
 <h2>Your Files</h2>
-<div>
+<br />
+<div id="data">
     <h4>
         Capacity:
         @ViewBag.TotalFilesSize
@@ -36,39 +70,49 @@
     </h4>
     <div class="circle-graph" style="--ratio: @((double)ViewBag.TotalFilesSize / (double)ViewBag.MaxTotalSize);"></div>
 </div>
-<table class="table" id="stored-files-table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StoredFileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoredFileSize)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div id="upload">
+    <br />
+    @Html.ActionLink("Upload a file", "Upload", null, new { @class = "fancy-button" })
+    <br />
+</div>
+
+<div id="table-container">
+    <br />
+    <br />
+    <table class="table" id="stored-files-table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StoredFileName)
-                </td>
-                <td>
-                    @{
-                        decimal sizeInMegabytes = ((decimal)item.StoredFileSize) / 1000;
-                    }
-                    @sizeInMegabytes
-                </td>
-                <td>
-                    @Html.ActionLink("Download", "Download", new { id = item.Id }) |
-                    <button data-stored-file-id="@item.Id" class="btn btn-danger js-delete">Delete</button>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoredFileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoredFileSize)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StoredFileName)
+                    </td>
+                    <td>
+                        @{
+                            decimal sizeInMegabytes = ((decimal)item.StoredFileSize) / 1000;
+                        }
+                        @sizeInMegabytes
+                    </td>
+                    <td>
+                        @Html.ActionLink("Download", "Download", new { id = item.Id }) |
+                        <button data-stored-file-id="@item.Id" class="btn btn-danger js-delete">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 @section scripts{
     <script>
         $(document).ready(function () {

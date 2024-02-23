@@ -183,6 +183,10 @@
     <Compile Include="Migrations\202402221920556_FixedSomeThings.designer.cs">
       <DependentUpon>202402221920556_FixedSomeThings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402222301388_AddedSharedFile.cs" />
+    <Compile Include="Migrations\202402222301388_AddedSharedFile.designer.cs">
+      <DependentUpon>202402222301388_AddedSharedFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -479,7 +483,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -538,6 +541,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402221920556_FixedSomeThings.resx">
       <DependentUpon>202402221920556_FixedSomeThings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402222301388_AddedSharedFile.resx">
+      <DependentUpon>202402222301388_AddedSharedFile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

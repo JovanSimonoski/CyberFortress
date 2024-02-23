@@ -1,41 +1,9 @@
 ﻿@{
     ViewBag.Title = "File Upload";
 }
-<head>
-    <style>
-        .circle-graph {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 10px solid #7EC8E3;
-            position: relative;
-        }
-
-            .circle-graph::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: calc(100% - 20px);
-                height: calc(100% - 20px);
-                border-radius: 50%;
-                background: conic-gradient(#0000FF calc(var(--ratio) * 360deg), transparent calc(var(--ratio) * 360deg) 360deg);
-                transform: translate(-50%, -50%);
-            }
-    </style>
-</head>
 
 <h2>Upload a File</h2>
-<div>
-    <h4>
-        Capacity:
-        @ViewBag.TotalFilesSize
-        /
-        @ViewBag.MaxTotalSize
-    </h4>
-    <div class="circle-graph" style="--ratio: @((double)ViewBag.TotalFilesSize / (double)ViewBag.MaxTotalSize);"></div>
-</div>
-<br />
+
 @using (Html.BeginForm("Upload", "StoredFiles", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
