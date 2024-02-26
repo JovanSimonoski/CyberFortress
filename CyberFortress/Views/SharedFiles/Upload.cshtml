@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "File Upload";
+}
+
+<h2>Upload a File</h2>
+
+@using (Html.BeginForm("Upload", "SharedFiles", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <br />
+    <div class="form-group">
+        <input type="file" name="file" id="file" class="form-control" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Upload</button>
+}
+
+<div>@ViewBag.Message</div>

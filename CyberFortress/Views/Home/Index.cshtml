@@ -1,27 +1,79 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<head>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
+        .main-section {
+            background-image: url('https://d2f44qh602lw1d.cloudfront.net/fileadmin/_processed_/5/e/csm_landingpage_CyberSecurity_69dc7c5438.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .features {
+            padding: 50px 0;
+        }
+
+            .features h2 {
+                color: #333;
+            }
+
+            .features p {
+                color: #666;
+            }
+
+            .features .btn {
+                background-color: #007bff;
+                border-color: #007bff;
+            }
+
+                .features .btn:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+    </style>
+</head>
 <main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Cyber Fortress</h1>
-        <p class="lead">Cyber Fortress is a website that provides free and secure storage of files.</p>
-    </section>
+        <section class="main-section" aria-labelledby="aspnetTitle">
+            <div class="container">
+                <h1 id="title" class="display-3">Welcome to Cyber Fortress</h1>
+                <p class="lead">Your stronghold for free and secure file storage.</p>
+            </div>
+        </section>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">How to get started on the platform?</h2>
-            <p>
-                All you have to do is to register an account and just like that you can start uploading files. Every user has a capacity of 1000 KB of encrypted data.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://localhost:44322/StoredFiles/Upload">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">How do we protect your data?</h2>
-            <p>
-                As you upload a file, it is immediately encrypted using AES encryption. We use separate key for every file you upload to upgrade the security level.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://localhost:44322/StoredFiles">Learn more &raquo;</a></p>
-        </section>
-    </div>
+        <div class="container features">
+            <div class="row">
+                <section class="col-md-4">
+                    <h2 id="gettingStartedTitle">How to get started on the platform?</h2>
+                    <p>
+                        All you have to do is to register an account and just like that you can start uploading files. Every user has a capacity of 1000 KB of encrypted data.
+                    </p>
+                    <br />
+                    <a class="btn btn-primary" href="https://localhost:44322/StoredFiles/Upload">Get Started &raquo;</a>
+                </section>
+                <section class="col-md-4">
+                    <h2 id="librariesTitle">How do we protect your data?</h2>
+                    <p>
+                        As you upload a file, it is immediately encrypted using AES encryption. We use separate key for every file you upload to upgrade the security level.
+                    </p>
+                    <br />
+                    <a class="btn btn-primary" href="https://localhost:44322/StoredFiles">Learn More &raquo;</a>
+                </section>
+                <section class="col-md-4">
+                    <h2 id="librariesTitle">Wondering what's that new feature on the website?</h2>
+                    <p>
+                        We recently added the feature of file sharing between our users. It's very simple and straight-forward. You just need to upload a file and then type the username of the user you want to share the file with.
+                    </p>
+                    <a class="btn btn-primary" href="https://localhost:44322/SharedFiles/SharedByMe">Discover &raquo;</a>
+                </section>
+            </div>
+        </div>
 </main>

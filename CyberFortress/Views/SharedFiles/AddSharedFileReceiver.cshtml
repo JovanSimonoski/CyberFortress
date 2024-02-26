@@ -1,0 +1,46 @@
+﻿@model CyberFortress.Models.SharedFileReceiverViewModel
+
+@{
+    ViewBag.Title = "AddSharedFileReceiver";
+}
+
+<head>
+    <style>
+        .col-form-label {
+            font-weight: bold;
+        }
+
+        .invalid-feedback {
+            display: none;
+            color: #dc3545;
+        }
+
+        .form-control.is-invalid, .was-validated .form-control:invalid {
+            border-color: #dc3545;
+        }
+
+            .form-control.is-invalid ~ .invalid-feedback, .was-validated .form-control:invalid ~ .invalid-feedback {
+                display: block;
+            }
+
+    </style>
+</head>
+
+<h2 class="mb-4">AddSharedFileReceiver</h2>
+
+@using (Html.BeginForm("AddSharedFileReceiverPost", "SharedFiles", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.SharedFileReceiverUsername, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SharedFileReceiverUsername, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        @Html.HiddenFor(model => model.SharedFileId)
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-primary">Share</button>
+        </div>
+    </div>
+}

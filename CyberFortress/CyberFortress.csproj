@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SharedFilesController.cs" />
     <Compile Include="Controllers\StoredFilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -187,10 +188,40 @@
     <Compile Include="Migrations\202402222301388_AddedSharedFile.designer.cs">
       <DependentUpon>202402222301388_AddedSharedFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402261135570_AddedSharedFilesModel.cs" />
+    <Compile Include="Migrations\202402261135570_AddedSharedFilesModel.designer.cs">
+      <DependentUpon>202402261135570_AddedSharedFilesModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402261144139_AddedSharedFilesModel1.cs" />
+    <Compile Include="Migrations\202402261144139_AddedSharedFilesModel1.designer.cs">
+      <DependentUpon>202402261144139_AddedSharedFilesModel1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402261230455_SomeCorrections.cs" />
+    <Compile Include="Migrations\202402261230455_SomeCorrections.designer.cs">
+      <DependentUpon>202402261230455_SomeCorrections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402261247591_AddedSharedFileViewModel.cs" />
+    <Compile Include="Migrations\202402261247591_AddedSharedFileViewModel.designer.cs">
+      <DependentUpon>202402261247591_AddedSharedFileViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402261303538_AddedSharedFileViewModel1.cs" />
+    <Compile Include="Migrations\202402261303538_AddedSharedFileViewModel1.designer.cs">
+      <DependentUpon>202402261303538_AddedSharedFileViewModel1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402261313039_AddedSharedFileViewModelFix.cs" />
+    <Compile Include="Migrations\202402261313039_AddedSharedFileViewModelFix.designer.cs">
+      <DependentUpon>202402261313039_AddedSharedFileViewModelFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402261359469_MadeSomeChanges.cs" />
+    <Compile Include="Migrations\202402261359469_MadeSomeChanges.designer.cs">
+      <DependentUpon>202402261359469_MadeSomeChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SharedFile.cs" />
+    <Compile Include="Models\SharedFileReceiverViewModel.cs" />
     <Compile Include="Models\StoredFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -506,6 +537,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StoredFiles\Index.cshtml" />
     <Content Include="Views\StoredFiles\Upload.cshtml" />
+    <Content Include="Views\SharedFiles\SharedWithMe.cshtml" />
+    <Content Include="Views\SharedFiles\SharedByMe.cshtml" />
+    <Content Include="Views\SharedFiles\Upload.cshtml" />
+    <Content Include="Views\SharedFiles\AddSharedFileReceiver.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -544,6 +579,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402222301388_AddedSharedFile.resx">
       <DependentUpon>202402222301388_AddedSharedFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261135570_AddedSharedFilesModel.resx">
+      <DependentUpon>202402261135570_AddedSharedFilesModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261144139_AddedSharedFilesModel1.resx">
+      <DependentUpon>202402261144139_AddedSharedFilesModel1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261230455_SomeCorrections.resx">
+      <DependentUpon>202402261230455_SomeCorrections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261247591_AddedSharedFileViewModel.resx">
+      <DependentUpon>202402261247591_AddedSharedFileViewModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261303538_AddedSharedFileViewModel1.resx">
+      <DependentUpon>202402261303538_AddedSharedFileViewModel1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261313039_AddedSharedFileViewModelFix.resx">
+      <DependentUpon>202402261313039_AddedSharedFileViewModelFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402261359469_MadeSomeChanges.resx">
+      <DependentUpon>202402261359469_MadeSomeChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

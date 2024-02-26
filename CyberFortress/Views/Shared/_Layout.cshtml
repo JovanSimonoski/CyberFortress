@@ -6,7 +6,39 @@
     <title>Cyber Fortress</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
 
+        .navbar {
+            padding: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.1rem;
+            margin-right: 20px;
+        }
+
+        .container.body-content {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -19,16 +51,18 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Files Safe", "Index", "StoredFiles", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Shared By Me", "SharedByMe", "SharedFiles", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Shared With Me", "SharedWithMe", "SharedFiles", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
-                 @Html.Partial("_LoginPartial")
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Jovan Simonoski</p>
+        <footer class="text-center text-white py-4">
+            <p style="color: black;">&copy; @DateTime.Now.Year - Jovan Simonoski</p>
         </footer>
     </div>
 
@@ -36,4 +70,5 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
 </html>

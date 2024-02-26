@@ -31,5 +31,9 @@ namespace CyberFortress.Models
         }
 
         public System.Data.Entity.DbSet<CyberFortress.Models.StoredFile> StoredFiles { get; set; }
+
+        public System.Data.Entity.DbSet<CyberFortress.Models.SharedFile> SharedFiles { get; set; }
+
+        public System.Data.Entity.DbSet<CyberFortress.Models.SharedFileReceiverViewModel> SharedFileReceiverViewModels { get; set; }
     }
 }

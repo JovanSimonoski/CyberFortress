@@ -100,9 +100,9 @@
                     </td>
                     <td>
                         @{
-                            decimal sizeInMegabytes = ((decimal)item.StoredFileSize) / 1000;
+                            decimal sizeInKilobytes = ((decimal)item.StoredFileSize) / 1000;
                         }
-                        @sizeInMegabytes
+                        @sizeInKilobytes
                     </td>
                     <td>
                         @Html.ActionLink("Download", "Download", new { id = item.Id }) |

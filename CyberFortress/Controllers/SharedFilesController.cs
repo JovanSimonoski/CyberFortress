@@ -1,6 +1,10 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
@@ -10,16 +14,22 @@ using Microsoft.AspNet.Identity;
 namespace CyberFortress.Controllers
 {
     [Authorize]
-    public class StoredFilesController : Controller
+    public class SharedFilesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private const double maxTotalSize = 1000.0;
-        public ActionResult Index()
+
+        public ActionResult SharedWithMe()
+        {
+            string currentUserId = User.Identity.GetUserId();
+            return View(db.SharedFiles.Where(m => m.ReceiverUserId.Equals(currentUserId)).ToList());
+        }
+        public ActionResult SharedByMe()
         {
             var currentUserId = User.Identity.GetUserId();
-            if (db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Count() > 0)
+            if (db.SharedFiles.Where(m => m.SenderUserId.Equals(currentUserId)).Count() > 0)
             {
-                int totalSizeOfFiles = db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Sum(m => m.StoredFileSize);
+                int totalSizeOfFiles = db.SharedFiles.Where(m => m.SenderUserId.Equals(currentUserId)).Sum(m => m.SharedFileSize);
                 ViewBag.TotalFilesSize = ((decimal)totalSizeOfFiles) / 1000;
             }
             else
@@ -27,7 +37,7 @@ namespace CyberFortress.Controllers
                 ViewBag.TotalFilesSize = 0;
             }
             ViewBag.MaxTotalSize = maxTotalSize;
-            return View(db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).ToList());
+            return View(db.SharedFiles.Where(m => m.SenderUserId.Equals(currentUserId)).ToList());
         }
 
         public ActionResult Upload()
@@ -38,16 +48,16 @@ namespace CyberFortress.Controllers
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file)
         {
-            if(file == null)
+            if (file == null)
             {
                 ViewBag.Message = "Please select a file";
                 return View("Upload");
             }
             var currentUserId = User.Identity.GetUserId();
             double totalSizeOfFiles = 0;
-            if (db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Count() > 0)
+            if (db.SharedFiles.Where(m => m.SenderUserId.Equals(currentUserId)).Count() > 0)
             {
-                totalSizeOfFiles = db.StoredFiles.Where(m => m.UserId.Equals(currentUserId)).Sum(m => m.StoredFileSize);
+                totalSizeOfFiles = db.SharedFiles.Where(m => m.SenderUserId.Equals(currentUserId)).Sum(m => m.SharedFileSize);
             }
             totalSizeOfFiles += file.ContentLength;
             totalSizeOfFiles /= 1000;
@@ -59,8 +69,8 @@ namespace CyberFortress.Controllers
             if (file != null && file.ContentLength > 0)
             {
                 var fileName = Path.GetFileName(file.FileName);
-                var userId = User.Identity.GetUserId();
-                var path = Path.Combine(Server.MapPath("~/Safe/" + userId), fileName);
+                var senderUserId = User.Identity.GetUserId();
+                var path = Path.Combine(Server.MapPath("~/SharedSafe/" + senderUserId), fileName);
                 var fileSize = file.ContentLength;
                 byte[] encryptionKey;
                 byte[] IV;
@@ -78,20 +88,25 @@ namespace CyberFortress.Controllers
 
                 EncryptAndSaveFile(file.InputStream, path, encryptionKey, IV);
 
-                var storedFile = new StoredFile
+                var sharedFile = new SharedFile
                 {
-                    StoredFileName = fileName,
-                    StoredFilePath = path,
-                    UserId = userId,
-                    StoredFileSize = fileSize,
-                    StoredFileEncryptionKey = encryptionKey,
-                    StoredFileIV = IV
+                    SharedFileName = fileName,
+                    SharedFilePath = path,
+                    SenderUserId = senderUserId,
+                    SenderUserName = User.Identity.GetUserName(),
+                    SharedFileSize = fileSize,
+                    SharedFileEncryptionKey = encryptionKey,
+                    SharedFileIV = IV
                 };
 
-                db.StoredFiles.Add(storedFile);
+                db.SharedFiles.Add(sharedFile);
                 db.SaveChanges();
 
                 ViewBag.Message = "File uploaded and encrypted successfully";
+
+                SharedFileReceiverViewModel model = new SharedFileReceiverViewModel();
+                model.SharedFileId = sharedFile.Id;
+                return RedirectToAction("AddSharedFileReceiver",model);
             }
             else
             {
@@ -115,26 +130,48 @@ namespace CyberFortress.Controllers
             }
         }
 
-        public ActionResult Download(int? id)
+        public ActionResult AddSharedFileReceiver(SharedFileReceiverViewModel model) { 
+            return View(model); 
+        }
+
+        [HttpPost]
+        public ActionResult AddSharedFileReceiverPost(SharedFileReceiverViewModel model)
+        {
+            SharedFile file = db.SharedFiles.Find(model.SharedFileId);
+            if(file == null)
+            {
+                return Content("Invalid operaion");
+            }
+
+            file.SenderUserId = User.Identity.GetUserId();
+            file.SenderUserName = User.Identity.GetUserName();
+            file.ReceiverUserName = model.SharedFileReceiverUsername;
+            file.ReceiverUserId = db.Users.Where(m => m.Email.Equals(model.SharedFileReceiverUsername)).FirstOrDefault().Id;
+            db.SaveChanges();
+
+            return RedirectToAction("SharedByMe");
+        }
+
+        public ActionResult Download(int id)
         {
             var userId = User.Identity.GetUserId();
-            StoredFile file = db.StoredFiles.Where(m => m.Id == id).FirstOrDefault();
+            SharedFile file = db.SharedFiles.Where(m => m.Id == id).FirstOrDefault();
 
-            if(file == null)
+            if (file == null)
             {
                 return Content("Invalid file");
             }
 
-            if(userId != file.UserId)
+            if (userId != file.SenderUserId && userId != file.ReceiverUserId)
             {
                 return Content("Forbidden operation");
             }
 
-            var fileName = file.StoredFileName;
-            var filePath = Path.Combine(Server.MapPath("~/Safe/" + userId), fileName);
+            var fileName = file.SharedFileName;
+            var filePath = Path.Combine(Server.MapPath("~/SharedSafe/" + file.SenderUserId), fileName);
 
-            byte[] encryptionKey = file.StoredFileEncryptionKey;
-            byte[] IV = file.StoredFileIV;
+            byte[] encryptionKey = file.SharedFileEncryptionKey;
+            byte[] IV = file.SharedFileIV;
 
             return DecryptAndDownloadFile(filePath, fileName, encryptionKey, IV);
         }
@@ -167,28 +204,29 @@ namespace CyberFortress.Controllers
 
         public ActionResult Delete(int id)
         {
-            StoredFile storedFile = db.StoredFiles.Find(id);
-            if(storedFile == null)
+            SharedFile sharedFile = db.SharedFiles.Find(id);
+            if (sharedFile == null)
             {
                 return Content("Invalid file");
             }
 
-            if (!storedFile.UserId.Equals(User.Identity.GetUserId()))
+            if(!sharedFile.SenderUserId.Equals(User.Identity.GetUserId()) &&
+               !sharedFile.ReceiverUserId.Equals(User.Identity.GetUserId()))
             {
-                return Content("Forbidden operation");
+                return Content("Forbidden action");
             }
 
-            db.StoredFiles.Remove(storedFile);
+            db.SharedFiles.Remove(sharedFile);
             db.SaveChanges();
 
-            var filePath = storedFile.StoredFilePath;
+            var filePath = sharedFile.SharedFilePath;
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
                 ViewBag.Message = "File deleted successfully";
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("SharedByMe");
         }
 
         protected override void Dispose(bool disposing)

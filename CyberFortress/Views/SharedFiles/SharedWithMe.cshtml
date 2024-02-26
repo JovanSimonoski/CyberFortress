@@ -1,0 +1,73 @@
+﻿@model IEnumerable<CyberFortress.Models.SharedFile>
+
+@{
+    ViewBag.Title = "SharedWithMe";
+}
+
+<h2>Shared With Me</h2>
+
+<div id="table-container">
+    <br />
+    <br />
+    <table class="table" id="shared-files-table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SharedFileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SharedFileSize)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SenderUserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SharedFileName)
+                    </td>
+                    <td>
+                        @{
+                            decimal sizeInKilobytes = ((decimal)item.SharedFileSize) / 1000;
+                        }
+                        @sizeInKilobytes
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SenderUserName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Download", "Download", new { id = item.Id }) |
+                        <button data-shared-file-id="@item.Id" class="btn btn-danger js-delete">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#shared-files-table").DataTable();
+            $(".js-delete").on("click", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/SharedFiles/Delete/" + button.attr("data-shared-file-id"),
+                            method: "GET",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                })
+            })
+        })
+    </script>
+}
