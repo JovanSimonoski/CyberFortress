@@ -1,0 +1,93 @@
+﻿@model IEnumerable<CyberFortress.Models.EncryptedPassword>
+
+@{
+    ViewBag.Title = "Password Manager";
+}
+
+<h2>Saved Passwords</h2>
+
+<p>
+    @Html.ActionLink("Add new password", "Create")
+</p>
+<table class="table" id="stored-passwords-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Website)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+            </th>
+            <th>Password</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Website)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.HiddenFor(modelItem => item.EncryptedData)
+                </td>
+                <td>
+                    <input type="text">
+                </td>
+                <td>
+                    <button class="btn btn-success" onclick="show_password(this)">Show Password</button>
+                    <button data-password-stored-id="@item.Id" class="btn btn-danger js-delete">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $("#stored-passwords-table").DataTable();
+            $(".js-delete").on("click", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/EncryptedPasswords/Delete/" + button.attr("data-password-stored-id"),
+                            method: "GET",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                })
+            })
+        })
+
+        function show_password(button) {
+            let row = button.closest('tr');
+            let encrypted_password = row.querySelector('td:nth-child(3) input').value;
+
+            encrypted_password = encrypted_password.trimStart().trimEnd();
+
+            let masterPassword = prompt("Enter your master password:");
+
+            if (masterPassword) {
+
+                let decrypted = CryptoJS.AES.decrypt(
+                    encrypted_password,
+                    masterPassword
+                ).toString(CryptoJS.enc.Utf8);
+
+                row.querySelector('td:nth-child(4)').textContent = decrypted;
+            }
+        }
+    </script>
+}

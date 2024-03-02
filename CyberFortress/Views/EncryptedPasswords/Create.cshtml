@@ -1,0 +1,81 @@
+﻿@model CyberFortress.Models.EncryptedPassword
+
+@{
+    ViewBag.Title = "Password Manager";
+}
+
+<h2>Save a new password</h2>
+
+@using (Html.BeginForm("Create", "EncryptedPasswords", FormMethod.Post, new { @id = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Website, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EncryptedData, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EncryptedData, new { htmlAttributes = new { @class = "form-control", @id = "encrypted-data" } })
+                @Html.ValidationMessageFor(model => model.EncryptedData, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+     
+    <script>
+        $(document).ready(function () {
+            $('#form').submit(function (event) {
+
+                event.preventDefault();
+
+                let masterPassword = prompt("Enter your master password:");
+                if (masterPassword) {
+
+                    let encrypted = CryptoJS.AES.encrypt(
+                        document.getElementById("encrypted-data").value,
+                        masterPassword
+                    ).toString();
+
+                    document.getElementById("encrypted-data").value = encrypted;
+                } else {
+                    alert("Master password is required to save the password.");
+                    return;
+                }
+
+                this.submit();
+            });
+        });
+    </script>
+}

@@ -13,7 +13,7 @@
         }
 
         .navbar {
-            padding: 20px;
+            padding: 0.8%;
         }
 
         .navbar-brand {
@@ -29,12 +29,12 @@
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 30px;
+            padding: 1%;
+            margin-top: 1%;
         }
 
         footer {
-            margin-top: 30px;
+            margin-top: 1%;
             font-size: 0.9rem;
         }
 
@@ -50,9 +50,10 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Files Safe", "Index", "StoredFiles", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("File Safe", "Index", "StoredFiles", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Shared By Me", "SharedByMe", "SharedFiles", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Shared With Me", "SharedWithMe", "SharedFiles", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Password Manager", "Index", "EncryptedPasswords", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

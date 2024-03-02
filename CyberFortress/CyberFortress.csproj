@@ -169,6 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EncryptedPasswordsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SharedFilesController.cs" />
@@ -216,8 +217,37 @@
     <Compile Include="Migrations\202402261359469_MadeSomeChanges.designer.cs">
       <DependentUpon>202402261359469_MadeSomeChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402271008545_AddedStoredPasswords.cs" />
+    <Compile Include="Migrations\202402271008545_AddedStoredPasswords.designer.cs">
+      <DependentUpon>202402271008545_AddedStoredPasswords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402271106036_AddedEncryptionFunctionalities.cs" />
+    <Compile Include="Migrations\202402271106036_AddedEncryptionFunctionalities.designer.cs">
+      <DependentUpon>202402271106036_AddedEncryptionFunctionalities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402271306211_AddedIVtoStoredPassword.cs" />
+    <Compile Include="Migrations\202402271306211_AddedIVtoStoredPassword.designer.cs">
+      <DependentUpon>202402271306211_AddedIVtoStoredPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403011628060_FixingPasswordFeature.cs" />
+    <Compile Include="Migrations\202403011628060_FixingPasswordFeature.designer.cs">
+      <DependentUpon>202403011628060_FixingPasswordFeature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403011642156_FixingPasswordFeature1.cs" />
+    <Compile Include="Migrations\202403011642156_FixingPasswordFeature1.designer.cs">
+      <DependentUpon>202403011642156_FixingPasswordFeature1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403011821483_FixingPasswordFeature2.cs" />
+    <Compile Include="Migrations\202403011821483_FixingPasswordFeature2.designer.cs">
+      <DependentUpon>202403011821483_FixingPasswordFeature2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403020823059_FinalizingPasswordManager.cs" />
+    <Compile Include="Migrations\202403020823059_FinalizingPasswordManager.designer.cs">
+      <DependentUpon>202403020823059_FinalizingPasswordManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EncryptedPassword.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SharedFile.cs" />
@@ -227,6 +257,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\logo.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -541,10 +572,10 @@
     <Content Include="Views\SharedFiles\SharedByMe.cshtml" />
     <Content Include="Views\SharedFiles\Upload.cshtml" />
     <Content Include="Views\SharedFiles\AddSharedFileReceiver.cshtml" />
+    <Content Include="Views\EncryptedPasswords\Create.cshtml" />
+    <Content Include="Views\EncryptedPasswords\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />
@@ -600,6 +631,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402261359469_MadeSomeChanges.resx">
       <DependentUpon>202402261359469_MadeSomeChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402271008545_AddedStoredPasswords.resx">
+      <DependentUpon>202402271008545_AddedStoredPasswords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402271106036_AddedEncryptionFunctionalities.resx">
+      <DependentUpon>202402271106036_AddedEncryptionFunctionalities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402271306211_AddedIVtoStoredPassword.resx">
+      <DependentUpon>202402271306211_AddedIVtoStoredPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403011628060_FixingPasswordFeature.resx">
+      <DependentUpon>202403011628060_FixingPasswordFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403011642156_FixingPasswordFeature1.resx">
+      <DependentUpon>202403011642156_FixingPasswordFeature1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403011821483_FixingPasswordFeature2.resx">
+      <DependentUpon>202403011821483_FixingPasswordFeature2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403020823059_FinalizingPasswordManager.resx">
+      <DependentUpon>202403020823059_FinalizingPasswordManager.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
