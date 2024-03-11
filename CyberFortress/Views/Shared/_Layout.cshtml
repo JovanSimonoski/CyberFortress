@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Fortress</title>
+    <link rel="icon" type="image/x-icon" href="https://st2.depositphotos.com/3538103/5719/v/450/depositphotos_57197651-stock-illustration-shield-icon.jpg">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <style>
@@ -37,7 +38,6 @@
             margin-top: 1%;
             font-size: 0.9rem;
         }
-
     </style>
 </head>
 <body>
@@ -54,6 +54,7 @@
                     <li>@Html.ActionLink("Shared By Me", "SharedByMe", "SharedFiles", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Shared With Me", "SharedWithMe", "SharedFiles", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Password Manager", "Index", "EncryptedPasswords", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Additional Software", "Index", "Softwares", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

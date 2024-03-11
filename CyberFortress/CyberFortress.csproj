@@ -173,6 +173,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SharedFilesController.cs" />
+    <Compile Include="Controllers\SoftwaresController.cs" />
     <Compile Include="Controllers\StoredFilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -245,6 +246,14 @@
     <Compile Include="Migrations\202403020823059_FinalizingPasswordManager.designer.cs">
       <DependentUpon>202403020823059_FinalizingPasswordManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403111304429_AddedSoftwareDownload.cs" />
+    <Compile Include="Migrations\202403111304429_AddedSoftwareDownload.designer.cs">
+      <DependentUpon>202403111304429_AddedSoftwareDownload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403111314502_AddedSoftwareDownload1.cs" />
+    <Compile Include="Migrations\202403111314502_AddedSoftwareDownload1.designer.cs">
+      <DependentUpon>202403111314502_AddedSoftwareDownload1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EncryptedPassword.cs" />
@@ -252,6 +261,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SharedFile.cs" />
     <Compile Include="Models\SharedFileReceiverViewModel.cs" />
+    <Compile Include="Models\Software.cs" />
     <Compile Include="Models\StoredFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -574,6 +584,7 @@
     <Content Include="Views\SharedFiles\AddSharedFileReceiver.cshtml" />
     <Content Include="Views\EncryptedPasswords\Create.cshtml" />
     <Content Include="Views\EncryptedPasswords\Index.cshtml" />
+    <Content Include="Views\Softwares\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -652,6 +663,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403020823059_FinalizingPasswordManager.resx">
       <DependentUpon>202403020823059_FinalizingPasswordManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403111304429_AddedSoftwareDownload.resx">
+      <DependentUpon>202403111304429_AddedSoftwareDownload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403111314502_AddedSoftwareDownload1.resx">
+      <DependentUpon>202403111314502_AddedSoftwareDownload1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
